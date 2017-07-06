@@ -1,7 +1,20 @@
 zhihu-python：获取知乎信息
 ===============================
 
-**注意: 本项目不再维护更新！**
+** 2017/7/4更新 **
+原项目:[egrcc/zhihu-python](https://github.com/egrcc/zhihu-python)
+
+原项目已停止维护，许多方法不能用，出于兴趣做了更新修改，供学习交流。
+
+仍有部分内容未完成更新，欢迎帅哥美女们共同完善它。
+
+交流QQ:584927688，后期若有需要再建群。:P
+
+ - 更正大量不适用标签。
+ - 更换了模拟登陆方法。
+ - 去除了失效的抓取方法。
+
+** 以下为原项目README **
 
 .. contents::
 
@@ -14,6 +27,8 @@ zhihu-python 采用 Python2.7 编写，用来方便地获取知乎上各种内�
 使用 Python3 的类似项目可以参见：`zhihu-py3 <https://github.com/7sDream/zhihu-py3>`_ 。使用 PHP 的类似项目可以参见：`zhihu-php <https://github.com/ahonn/zhihu-php>`_ 。使用 Go 的类似项目可以参见：`zhihu-go <https://github.com/DeanThompson/zhihu-go>`_ 。
 
 **注: 本项目代码均在 Ubuntu14.04 上使用 python2.7.6 编写和测试通过，其他环境可能存在一定问题。**
+
+（PS：get_all_answers暂时无法使用）
 
 获取某个问题下的全部回答并导出，很简单：
 
