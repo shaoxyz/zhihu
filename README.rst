@@ -1,9 +1,9 @@
 zhihu-python：获取知乎信息
 ===============================
 
-** 2017/7/4更新 **
+**2017/7/4更新**
 
-原项目:`egrcc/zhihu-python]<https://github.com/egrcc/zhihu-python>`_.
+原项目:`egrcc/zhihu-python <https://github.com/egrcc/zhihu-python>`_.
 
 原项目已停止维护，许多方法不能用，出于兴趣做了更新修改，供学习交流。
 
@@ -15,7 +15,7 @@ zhihu-python：获取知乎信息
  - 更换了模拟登陆方法。
  - 去除了失效的抓取方法。
 
-** 以下为原项目README **
+**以下为原项目README**
 
 .. contents::
 
