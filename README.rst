@@ -2,7 +2,8 @@ zhihu-python：获取知乎信息
 ===============================
 
 ** 2017/7/4更新 **
-原项目:[egrcc/zhihu-python](https://github.com/egrcc/zhihu-python)
+
+原项目:`egrcc/zhihu-python]<https://github.com/egrcc/zhihu-python>`_.
 
 原项目已停止维护，许多方法不能用，出于兴趣做了更新修改，供学习交流。
 
