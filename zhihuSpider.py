@@ -213,7 +213,19 @@ class Question:
         soup = self.soup
         visit_times = int(soup.find_all("div", class_="NumberBoard-value")[1].string)
         return visit_times
-  
+    
+    def get_top_i_answers(self, n):
+        j = 0
+        answers = self.get_all_answers()
+        for answer in answers:
+            j = j + 1
+            if j > n:
+                break
+            yield answer
+
+    def get_top_answer(self):
+        for answer in self.get_top_i_answers(1):
+            return answer
 # 答案操作类
 class Answer:
     answer_url = None
