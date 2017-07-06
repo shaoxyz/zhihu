@@ -98,8 +98,114 @@ class Question:
         topics = '/'.join(topics)
         return topics
 
-    #def get_all_answers(self):
-        #待修复
+    def get_all_answers(self):
+        answers_num = self.get_answers_num()
+        if answers_num == 0:
+            print "No answer."
+            return
+            yield
+        else:
+            for i in xrange((answers_num - 1) / 20 + 1): # i 页码
+                if i == 0:
+                    for j in xrange(min(answers_num, 20)): # j 答案编号
+                        if self.soup == None:
+                            self.parser()
+                        soup = BeautifulSoup(self.soup.encode("utf-8"), "lxml")
+
+                        author = None
+                        if soup.find_all("span", class_="UserLink AuthorInfo-name")[j].get_text(strip='\n') == u"匿名用户":
+                            author_url = None
+                            author = User(author_url)
+                        else:
+                            author_tag = soup.find_all("a", class_="UserLink-link")[j]
+                            author_id = author_tag.string
+                            author_url = "https://www.zhihu.com" + author_tag["href"]
+                            author = User(author_url, author_id)
+
+                        count = soup.find_all("span", class_="Voters")[j].string
+                        pattern = re.compile(r'\d+')
+                        upvote = int(pattern.match(count).group())
+
+                        answer_url = "https://www.zhihu.com" + soup.find_all("a", target="_blank")[j]["href"]
+
+                        answer = soup.find_all("div", class_="RichContent-inner")[j]
+                        create_time = soup.find_all("div", class_="ContentItem-time")[j]
+                        soup.body.extract()
+                        soup.head.insert_after(soup.new_tag("body", **{'class': 'zhi'}))
+                        soup.body.append(answer)
+                        soup.body.append(create_time)
+
+                        img_list = soup.find_all("img", class_="content_image lazy")
+                        for img in img_list:
+                            img["src"] = img["data-actualsrc"]
+                        img_list = soup.find_all("img", class_="origin_image zh-lightbox-thumb lazy")
+                        for img in img_list:
+                            img["src"] = img["data-actualsrc"]
+                        noscript_list = soup.find_all("noscript")
+                        for noscript in noscript_list:
+                            noscript.extract()
+                        content = soup
+                        answer = Answer(answer_url, self, author, upvote, content)
+                        yield answer
+                else:
+                    post_url = "https://www.zhihu.com/node/QuestionAnswerListV2"
+                    _xsrf = self.soup.find("input", attrs={'name': '_xsrf'})["value"]
+                    offset = i * 20
+                    params = json.dumps(
+                        {"url_token": int(self.url[-8:-1] + self.url[-1]), "pagesize": 20, "offset": offset})
+                    data = {
+                        '_xsrf': _xsrf,
+                        'method': "next",
+                        'params': params
+                    }
+                    header = {
+                        'User-Agent': "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:34.0) Gecko/20100101 Firefox/34.0",
+                        'Host': "www.zhihu.com",
+                        'Referer': self.url
+                    }
+                    r = requests.post(post_url, data=data, headers=header, verify=False)
+
+                    answer_list = r.json()["msg"]
+                    for j in xrange(min(answers_num - i * 20, 20)):
+                        soup = BeautifulSoup(self.soup.encode("utf-8"), "lxml")
+
+                        answer_soup = BeautifulSoup(answer_list[j], "lxml")
+
+                        author = None
+                        if answer_soup.find("span", class_="UserLink AuthorInfo-name").get_text(strip='\n') == u"匿名用户":
+                            author_url = None
+                            author = User(author_url)
+                        else:
+                            author_tag = answer_soup.find("div", targe="RichContent-inner")[1]
+                            author_id = author_tag.string.encode("utf-8")
+                            author_url = "https://www.zhihu.com" + author_tag["href"]
+                            author = User(author_url, author_id)
+
+                        count = soup.select("span[class=Voters]")[j].string
+                        pattern = re.compile(r'\d+')
+                        upvote = int(pattern.match(count).group())
+
+                        answer_url = "https://www.zhihu.com" + soup.find_all("a", target="_blank")[j]["href"]
+
+                        answer = soup.find_all("div", class_="RichContent-inner")[j]
+                        create_time = soup.find_all("div", class_="ContentItem-time")[j]
+                        soup.body.extract()
+                        soup.head.insert_after(soup.new_tag("body", **{'class': 'zhi'}))
+                        soup.body.append(answer)
+                        soup.body.append(create_time)
+
+                        img_list = soup.find_all("img", class_="content_image lazy")
+                        for img in img_list:
+                            img["src"] = img["data-actualsrc"]
+                        img_list = soup.find_all("img", class_="origin_image zh-lightbox-thumb lazy")
+                        for img in img_list:
+                            img["src"] = img["data-actualsrc"]
+                        noscript_list = soup.find_all("noscript")
+                        for noscript in noscript_list:
+                            noscript.extract()
+                        content = soup
+                        answer = Answer(answer_url, self, author, upvote, content)
+                        yield answer
         
     def get_visit_times(self):
         if self.soup == None:
@@ -107,7 +213,7 @@ class Question:
         soup = self.soup
         visit_times = int(soup.find_all("div", class_="NumberBoard-value")[1].string)
         return visit_times
-
+  
 # 答案操作类
 class Answer:
     answer_url = None
