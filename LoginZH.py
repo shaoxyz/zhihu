@@ -2,7 +2,7 @@
 # filename:LoginZH.py
 
 """
-#by xchaoinfo
+from github:xchaoinfo
 url https://github.com/xchaoinfo/fuck-login
 """
 
