@@ -9,11 +9,7 @@ zhihu-python：获取知乎信息
 
 更新这个项目初衷是为了学习爬虫，所以选了一个星星较多的项目，
 
-目前正在使用selenium开发**雪球自动打新**等项目，有兴趣参与可以加我QQ，一起学习一起进步。
-
-该项目仍有部分内容未完成更新，欢迎帅哥美女们共同完善它。
-
-10秒抓500个答案的代码单独放到了这里`zhihuQA <https://github.com/Shaw-lib/zhihu-QA>`_.
+10秒抓500个答案的代码单独放到了这里`zhihuQA <https://github.com/shaoxyz/zhihu-QA>`_.
 
 交流QQ:584927688:P
 
